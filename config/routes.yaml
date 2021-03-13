@@ -1,0 +1,7 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+create_product:
+  path: /product
+  # the controller value has the format 'controller_class::method_name'
+  controller: App\Web\Controller\ProductController:createProduct
