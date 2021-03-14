@@ -8,5 +8,8 @@ use App\Common\Domain\Bus\Command\CommandHandler;
 
 class CreateProductCommandHandler implements CommandHandler
 {
-
+    public function handle(CreateProductCommand $createProductCommand)
+    {
+        dump("Hello from handler!");
+    }
 }
