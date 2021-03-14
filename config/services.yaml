@@ -27,6 +27,15 @@ services:
         resource: '../src/Web/Controller/'
         tags: ['controller.service_arguments']
 
+    #app.product.repository: '@App\Backend\Products\Infrastructure\Persistence\ProductRepository'
+
+    app.product.create_command_handler:
+        class: 'App\Backend\Products\Application\Create\CreateProductCommandHandler'
+        public: true
+#        calls:
+#            - [ setProductRepository, [ '@App\Backend\Products\Infrastructure\Persistence\ProductRepository' ] ]
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     App\Common\Domain\Bus\Command\CommandBus: '@App\Common\Infrastructure\Bus\Command\CommandBus'
+    App\Backend\Products\Domain\ProductRepository: '@App\Backend\Products\Infrastructure\Persistence\ProductRepository'

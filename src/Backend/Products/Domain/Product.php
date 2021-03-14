@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Backend\Products\Domain;
 
 use App\Backend\Products\Domain\ProductId;
+use App\Common\Domain\AggregateRoot;
 
-class Product
+class Product extends AggregateRoot
 {
     private ProductId $id;
 

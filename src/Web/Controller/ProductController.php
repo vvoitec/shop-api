@@ -6,7 +6,6 @@ namespace App\Web\Controller;
 
 use App\Backend\Products\Application\Create\CreateProductCommand;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
@@ -14,7 +13,6 @@ class ProductController extends AbstractController
     public function createProduct()
     {
         $this->bus->dispatch(new CreateProductCommand(
-            '1',
             'test',
             '12,99'
         ));

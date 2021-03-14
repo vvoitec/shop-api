@@ -9,16 +9,10 @@ use App\Common\Domain\Bus\Command\Command;
 class CreateProductCommand implements Command
 {
     public function __construct(
-        private string $id,
         private string $title,
         private string $price,
     )
     {
-    }
-
-    public function id(): string
-    {
-        return $this->id;
     }
 
     public function title(): string

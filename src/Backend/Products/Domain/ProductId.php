@@ -2,8 +2,8 @@
 
 namespace App\Backend\Products\Domain;
 
-use App\Backend\Common\Domain\AutoId;
+use App\Backend\Common\Domain\IntegerValueObject;
 
-class ProductId extends AutoId
+class ProductId extends IntegerValueObject
 {
 }
