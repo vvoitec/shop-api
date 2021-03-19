@@ -6,5 +6,5 @@ namespace App\Common\Domain\Bus\Command;
 
 interface CommandHandler
 {
-
+    public function handle(Command $command): void;
 }

@@ -27,15 +27,27 @@ services:
         resource: '../src/Web/Controller/'
         tags: ['controller.service_arguments']
 
-    #app.product.repository: '@App\Backend\Products\Infrastructure\Persistence\ProductRepository'
-
-    app.product.create_command_handler:
-        class: 'App\Backend\Products\Application\Create\CreateProductCommandHandler'
+    # Command handlers:
+    'App\Backend\Products\Application\Create\CreateProductCommandHandler':
         public: true
-#        calls:
-#            - [ setProductRepository, [ '@App\Backend\Products\Infrastructure\Persistence\ProductRepository' ] ]
+    'App\Backend\Products\Application\Update\UpdateProductCommandHandler':
+        public: true
+    'App\Backend\Products\Application\Remove\RemoveProductCommandHandler':
+        public: true
+    'App\Backend\Cart\Application\Create\CreateCartCommandHandler':
+        public: true
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     App\Common\Domain\Bus\Command\CommandBus: '@App\Common\Infrastructure\Bus\Command\CommandBus'
     App\Backend\Products\Domain\ProductRepository: '@App\Backend\Products\Infrastructure\Persistence\ProductRepository'
+    App\Backend\Products\Application\Search\ProductsSearcher:
+        tags: ['searcher']
+
+    App\Common\Infrastructure\Factory\SearcherFactory:
+        arguments:
+            - !tagged_iterator searcher
+    App\Common\Infrastructure\Validation\ApplicationExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onException }

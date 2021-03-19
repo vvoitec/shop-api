@@ -12,21 +12,15 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            App:
-                is_bundle: false
-                type: annotation
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
-                alias: App
             App\Backend\Products\Domain:
                 is_bundle: false
                 type: xml
                 dir: '%kernel.project_dir%/src/Backend/Products/Infrastructure/Persistence/Mapping'
                 prefix: 'App\Backend\Products\Domain'
                 alias: Product
-#            App\Backend\Common\Domain\Product:
-#                is_bundle: false
-#                type: xml
-#                dir: '%kernel.project_dir%\src\Backend\Products\Infrastructure\Persistence\Mapping'
-#                prefix: 'App\Backend\Common\Domain\Product'
-#                alias: Product
+            App\Backend\Cart\Domain:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Backend/Cart/Infrastructure/Persistence/Mapping'
+                prefix: 'App\Backend\Cart\Domain'
+                alias: Cart

@@ -33,7 +33,7 @@ class Product extends AggregateRoot
 
     public function price(): ProductPrice
     {
-        return $this->id;
+        return $this->price;
     }
 
     public function title(): ProductTitle

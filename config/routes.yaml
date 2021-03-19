@@ -1,3 +1,28 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+product.create:
+  path: /product
+  controller: App\Web\Controller\ProductController::createProduct
+  methods: POST
+product.search:
+  path: /product
+  controller: App\Web\Controller\ProductController::searchProducts
+  methods: GET|HEAD
+product.update:
+  path: /product/{slug}
+  controller: App\Web\Controller\ProductController::updateProduct
+  methods: PUT
+  requirements:
+    slug: '\d+'
+product.remove:
+  path: /product/{slug}
+  controller: App\Web\Controller\ProductController::removeProduct
+  methods: DELETE
+  requirements:
+    slug: '\d+'
+
+cart.create:
+  path: /cart
+  controller: App\Web\Controller\CartController::createCart
+  methods: POST

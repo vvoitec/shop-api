@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace App\Common\Infrastructure\Bus\Command;
 
+use App\Backend\Cart\Application\Create\CreateCartCommandHandler;
+use App\Backend\Products\Application\Create\CreateProductCommand;
 use App\Backend\Products\Application\Create\CreateProductCommandHandler;
+use App\Backend\Products\Application\Remove\RemoveProductCommand;
+use App\Backend\Products\Application\Remove\RemoveProductCommandHandler;
+use App\Backend\Products\Application\Update\UpdateProductCommand;
+use App\Backend\Products\Application\Update\UpdateProductCommandHandler;
 use App\Common\Domain\Bus\Command\Command;
-use App\Common\Domain\Bus\Command\CommandHandler;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use SimpleBus\Message\Bus\Middleware\FinishesHandlingMessageBeforeHandlingNext;
 use SimpleBus\Message\Bus\Middleware\MessageBusSupportingMiddleware;
 use SimpleBus\Message\CallableResolver\CallableMap;
@@ -19,37 +24,39 @@ use SimpleBus\Message\Name\ClassBasedNameResolver;
 class CommandBus implements \App\Common\Domain\Bus\Command\CommandBus
 {
     private MessageBusSupportingMiddleware $bus;
-    private CreateProductCommandHandler $createProductCommandHandler;
-
-    public function __construct(CreateProductCommandHandler $createProductCommandHandler)
-    {
-        $this->createProductCommandHandler = $createProductCommandHandler;
-
-        $commandHandlersByCommandName = [
-            'App\Backend\Products\Application\Create\CreateProductCommand' => array('create_product_command_handler', 'handle')
+    private ContainerInterface $serviceLocator;
+    private CallableMap $commandHandlerMap;
+    private array $subscribedEvents = [
+            CreateProductCommand::class => array(CreateProductCommandHandler::class, 'handle'),
+            RemoveProductCommand::class => array(RemoveProductCommandHandler::class, 'handle'),
+            UpdateProductCommand::class => array(UpdateProductCommandHandler::class, 'handle'),
         ];
 
-        $serviceLocator = function ($serviceId) {
-            if ('create_product_command_handler' === $serviceId) {
-//                return new CreateProductCommandHandler();
-                return $this->createProductCommandHandler;
-            }
-        };
+    public function __construct(ContainerInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+        $this->mapHandlers();
+        $this->initialize();
+    }
 
-        $commandHandlerMap = new CallableMap(
-            $commandHandlersByCommandName,
-            new ServiceLocatorAwareCallableResolver($serviceLocator)
-        );
-
-
+    private function initialize()
+    {
         $this->bus = new MessageBusSupportingMiddleware();
         $this->bus->appendMiddleware(new FinishesHandlingMessageBeforeHandlingNext());
         $this->bus->appendMiddleware(new DelegatesToMessageHandlerMiddleware(
             new NameBasedMessageHandlerResolver(
                 new ClassBasedNameResolver(),
-                $commandHandlerMap
+                $this->commandHandlerMap
             )
         ));
+    }
+
+    private function mapHandlers()
+    {
+        $this->commandHandlerMap = new CallableMap(
+            $this->subscribedEvents,
+            new ServiceLocatorAwareCallableResolver(fn($id) => $this->serviceLocator->get($id))
+        );
     }
 
     public function dispatch(Command $command): void
