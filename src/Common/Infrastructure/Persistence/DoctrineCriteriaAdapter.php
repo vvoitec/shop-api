@@ -25,9 +25,13 @@ class DoctrineCriteriaAdapter implements CriteriaAdapter
         $expressions = array();
         foreach ($filters as $fieldName => $filter) {
             if ($filter) {
-                array_push($expressions, $criteria::expr()->eq($fieldName, $filter));
+                array_push($expressions,
+                    is_array($filter) ?
+                        $criteria::expr()->in($fieldName, $filter)
+                        : $criteria::expr()->eq($fieldName, $filter)
+                );
             }
         }
-        return count($expressions) > 2 ? $criteria::expr()->andX(...$expressions) : $expressions[0] ?? null;
+        return count($expressions) > 1 ? $criteria::expr()->andX(...$expressions) : $expressions[0] ?? null;
     }
 }

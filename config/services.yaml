@@ -36,7 +36,8 @@ services:
         public: true
     'App\Backend\Cart\Application\Create\CreateCartCommandHandler':
         public: true
-
+    'App\Backend\Cart\Application\AddProduct\AddProductToCartCommandHandler':
+        public: true
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

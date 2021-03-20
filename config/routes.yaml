@@ -32,9 +32,15 @@ cart.create:
   path: /cart
   controller: App\Web\Controller\CartController::createCart
   methods: POST
-cart.search:
+cart.get_cart:
   path: /cart/{slug}
   controller: App\Web\Controller\CartController::getCart
   methods: GET
+  requirements:
+    slug: '\d+'
+cart.add_products_to_cart:
+  path: /cart/{slug}
+  controller: App\Web\Controller\CartController::addProductsToCart
+  methods: PUT
   requirements:
     slug: '\d+'

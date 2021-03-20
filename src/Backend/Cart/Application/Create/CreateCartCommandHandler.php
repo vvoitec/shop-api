@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Backend\Cart\Application\Application\Create;
+namespace App\Backend\Cart\Application\Create;
 
 use App\Backend\Cart\Domain\Cart;
 use App\Backend\Cart\Domain\CartRepository;
