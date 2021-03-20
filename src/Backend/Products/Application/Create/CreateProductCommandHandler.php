@@ -11,7 +11,7 @@ use App\Backend\Products\Domain\ProductTitle;
 use App\Common\Domain\Bus\Command\Command;
 use App\Common\Domain\Bus\Command\CommandHandler;
 use App\Common\Domain\Bus\Exceptions\InvalidCommandException;
-use App\Common\Domain\Validator;
+use App\Common\Domain\Filtering\Criteria;
 
 class CreateProductCommandHandler implements CommandHandler
 {
@@ -35,7 +35,7 @@ class CreateProductCommandHandler implements CommandHandler
         if(empty($command->title()) || empty($command->price())){
             throw new InvalidCommandException('Price and title must not be empty');
         }
-        $titleExists = $this->productRepository->exists($command->title(), 'title');
+        $titleExists = $this->productRepository->isExistingByCriteria(new Criteria(['title.value' => $command->title()]));
         if ($titleExists) {
             throw new InvalidCommandException('Title already exists!');
         }

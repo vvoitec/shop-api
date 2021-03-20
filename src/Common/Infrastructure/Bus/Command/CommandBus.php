@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Common\Infrastructure\Bus\Command;
 
-use App\Backend\Cart\Application\Create\CreateCartCommandHandler;
+use App\Backend\Cart\Application\Application\Create\CreateCartCommand;
+use App\Backend\Cart\Application\Application\Create\CreateCartCommandHandler;
 use App\Backend\Products\Application\Create\CreateProductCommand;
 use App\Backend\Products\Application\Create\CreateProductCommandHandler;
 use App\Backend\Products\Application\Remove\RemoveProductCommand;
@@ -30,17 +31,18 @@ class CommandBus implements \App\Common\Domain\Bus\Command\CommandBus
             CreateProductCommand::class => array(CreateProductCommandHandler::class, 'handle'),
             RemoveProductCommand::class => array(RemoveProductCommandHandler::class, 'handle'),
             UpdateProductCommand::class => array(UpdateProductCommandHandler::class, 'handle'),
+            CreateCartCommand::class => array(CreateCartCommandHandler::class, 'handle')
         ];
 
     public function __construct(ContainerInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
-        $this->mapHandlers();
         $this->initialize();
     }
 
     private function initialize()
     {
+        $this->createMapHandlers();
         $this->bus = new MessageBusSupportingMiddleware();
         $this->bus->appendMiddleware(new FinishesHandlingMessageBeforeHandlingNext());
         $this->bus->appendMiddleware(new DelegatesToMessageHandlerMiddleware(
@@ -51,7 +53,7 @@ class CommandBus implements \App\Common\Domain\Bus\Command\CommandBus
         ));
     }
 
-    private function mapHandlers()
+    private function createMapHandlers()
     {
         $this->commandHandlerMap = new CallableMap(
             $this->subscribedEvents,

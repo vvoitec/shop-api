@@ -44,6 +44,8 @@ services:
     App\Backend\Products\Domain\ProductRepository: '@App\Backend\Products\Infrastructure\Persistence\ProductRepository'
     App\Backend\Products\Application\Search\ProductsSearcher:
         tags: ['searcher']
+    App\Backend\Cart\Application\Search\CartSearcher:
+        tags: [ 'searcher' ]
 
     App\Common\Infrastructure\Factory\SearcherFactory:
         arguments:

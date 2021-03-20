@@ -9,6 +9,12 @@ product.search:
   path: /product
   controller: App\Web\Controller\ProductController::searchProducts
   methods: GET|HEAD
+product.get_product:
+  path: /product/{slug}
+  controller: App\Web\Controller\ProductController::getProduct
+  methods: GET
+  requirements:
+    slug: '\d+'
 product.update:
   path: /product/{slug}
   controller: App\Web\Controller\ProductController::updateProduct
@@ -26,3 +32,9 @@ cart.create:
   path: /cart
   controller: App\Web\Controller\CartController::createCart
   methods: POST
+cart.search:
+  path: /cart/{slug}
+  controller: App\Web\Controller\CartController::getCart
+  methods: GET
+  requirements:
+    slug: '\d+'

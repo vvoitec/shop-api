@@ -22,7 +22,7 @@ class ProductIds extends JsonType
         $scalars = parent::convertToPHPValue($value, $platform);
 
         return array_map(function (string $value) {
-            return new ProductId($value);
+            return new ProductId((int)$value);
         }, $scalars);
     }
 

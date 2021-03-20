@@ -9,6 +9,8 @@ use App\Backend\Products\Domain\ProductRepository;
 use App\Backend\Products\Domain\ProductTitle;
 use App\Common\Domain\Bus\Command\Command;
 use App\Common\Domain\Bus\Command\CommandHandler;
+use App\Common\Domain\Bus\Exceptions\InvalidCommandException;
+use App\Common\Domain\Filtering\Criteria;
 
 
 class UpdateProductCommandHandler implements CommandHandler
@@ -19,7 +21,8 @@ class UpdateProductCommandHandler implements CommandHandler
 
     public function handle(Command $command): void
     {
-        $product = $this->productRepository->searchById($command->id());
+        $product = $this->productRepository->searchOneByCriteria(new Criteria(['id.value' => $command->id()]));
+        $this->validate($command);
         if ($command->title()) {
             $product->rename(
                 new ProductTitle($command->title())
@@ -32,6 +35,14 @@ class UpdateProductCommandHandler implements CommandHandler
         }
 
         $this->productRepository->save($product);
+    }
+
+    private function validate(Command $command): void
+    {
+        $titleExists = $this->productRepository->isExistingByCriteria(new Criteria(['title.value' => $command->title()]));
+        if ($titleExists) {
+            throw new InvalidCommandException('Title already exists!');
+        }
     }
 
 }

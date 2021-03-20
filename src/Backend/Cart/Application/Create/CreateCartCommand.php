@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Backend\Cart\Application\Create;
+namespace App\Backend\Cart\Application\Application\Create;
 
 use App\Common\Domain\Bus\Command\Command;
 

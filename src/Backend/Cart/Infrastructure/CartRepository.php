@@ -6,6 +6,7 @@ namespace App\Backend\Cart\Infrastructure;
 
 use App\Backend\Cart\Domain\Cart;
 use App\Backend\Cart\Domain\CartRepository as CartRepositoryInterface;
+use App\Common\Domain\Filtering\Criteria;
 use App\Common\Infrastructure\Persistence\DoctrineRepository;
 
 class CartRepository extends DoctrineRepository implements CartRepositoryInterface
@@ -13,5 +14,20 @@ class CartRepository extends DoctrineRepository implements CartRepositoryInterfa
     public function save(Cart $cart): void
     {
         $this->persist($cart);
+    }
+
+    public function searchOneByCriteria(?Criteria $criteria): ?Cart
+    {
+        return $this->repository(Cart::class)->withCriteria($criteria)->search()[0] ?? null;
+    }
+
+    public function countByCriteria(?Criteria $criteria): int
+    {
+        return $this->repository(Cart::class)->withCriteria($criteria)->count();
+    }
+
+    public function isExistingByCriteria(?Criteria $criteria): bool
+    {
+        return $this->countByCriteria($criteria) > 0;
     }
 }

@@ -18,10 +18,16 @@ class ProductsSearcher implements Searcher
     )
     {}
 
+    public function searchOne(Criteria $criteria): ProductResponse
+    {
+        $product = $this->productRepository->searchOneByCriteria($criteria);
+        return new ProductResponse($product);
+    }
+
     public function searchAndCount(Criteria $criteria): ProductsResponse
     {
-        $products = $this->productRepository->search($criteria);
-        $total = $this->productRepository->count($criteria);
+        $products = $this->productRepository->searchByCriteria($criteria);
+        $total = $this->productRepository->countByCriteria($criteria);
 
         return new ProductsResponse($total,
             ...array_map(function ($product) {

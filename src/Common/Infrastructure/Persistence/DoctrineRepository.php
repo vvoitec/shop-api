@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Common\Infrastructure\Persistence;
 
+use App\Backend\Cart\Domain\Cart;
 use App\Backend\Products\Domain\Product;
 use App\Common\Domain\AggregateRoot;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,6 +14,9 @@ use Doctrine\Common\Collections\Criteria as DoctrineCriteria;
 
 class DoctrineRepository
 {
+    private EntityRepository $entityRepository;
+    private ?DoctrineCriteria $criteria = null;
+
     public function __construct(
         protected EntityManagerInterface $entityManager,
         protected CriteriaAdapter $criteriaAdapter,
@@ -31,23 +35,33 @@ class DoctrineRepository
         $this->entityManager->flush($entity);
     }
 
-    protected function repository(string $entityClass): EntityRepository
+    protected function repository(string $entityClass): DoctrineRepository
     {
-        return $this->entityManager->getRepository($entityClass);
+        $this->entityRepository = $this->entityManager->getRepository($entityClass);
+        return $this;
     }
 
-    public function search(Criteria $criteria): array
+    protected function withCriteria(Criteria $criteria): DoctrineRepository
     {
-        return $this->repository(Product::class)->matching($this->convertCriteria($criteria))->toArray();
+        $this->criteria = $this->criteriaAdapter->convert($criteria);
+        return $this;
     }
 
-    public function count(?Criteria $criteria): int
+    protected function search()
     {
-        return $this->repository(Product::class)->matching($this->convertCriteria($criteria))->count();
+        return $this->entityRepository->matching($this->criteria)->toArray();
     }
 
-    private function convertCriteria(Criteria $criteria): DoctrineCriteria
+    protected function searchOne()
     {
-        return $this->criteriaAdapter->convert($criteria);
+        $entity = $this->entityRepository->matching($this->criteria)->first();
+        if (!$entity) throw new InvalidIdentityException('Invalid identity');
+
+        return $entity;
+    }
+
+    public function count(): int
+    {
+        return $this->entityRepository->matching($this->criteria)->count();
     }
 }

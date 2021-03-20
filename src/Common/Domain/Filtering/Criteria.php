@@ -11,7 +11,7 @@ class Criteria
     private int $offset;
 
     // TODO: add ordering
-    public function __construct(?array $filters, ?string $offset, ?string $limit)
+    public function __construct(?array $filters, ?string $offset = null, ?string $limit = null)
     {
         $this->filters = $filters;
         $this->limit = $limit ? (int)$limit : 3;

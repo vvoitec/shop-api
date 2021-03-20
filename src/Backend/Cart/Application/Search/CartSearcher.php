@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Backend\Cart\Application\Search;
 
+use App\Backend\Cart\Application\CartResponse;
 use App\Backend\Cart\Domain\CartRepository;
 use App\Common\Domain\Filtering\Criteria;
 use App\Common\Domain\Query\Response;
@@ -16,9 +17,13 @@ class CartSearcher implements Searcher
     )
     {}
 
-    public function searchAndCount(Criteria $criteria): Response
+    public function search(Criteria $criteria): Response
     {
-//        $this->cartRepository->search($criteria);
-//        $this->cartRepository->count($criteria);
+        $cart = $this->cartRepository->searchOneByCriteria($criteria);
+        return new CartResponse($cart);
+    }
+
+    public function searchAndCount(Criteria $criteria) {
+        // stub;
     }
 }

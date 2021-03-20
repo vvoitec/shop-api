@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Backend\Products\Infrastructure\Persistence;
 
 use App\Backend\Products\Domain\Product;
+use App\Backend\Products\Domain\ProductId;
 use App\Common\Domain\Filtering\Criteria;
-use App\Common\Infrastructure\Persistence\DoctrineCriteriaAdapter;
 use App\Common\Infrastructure\Persistence\DoctrineRepository;
 use App\Backend\Products\Domain\ProductRepository as ProductRepositoryInterface;
 
@@ -17,32 +17,29 @@ class ProductRepository extends DoctrineRepository implements ProductRepositoryI
         $this->persist($product);
     }
 
-    public function removeById(int $id): void
+    public function removeById(int | string $id): void
     {
-        $product = $this->searchById($id);
+        $product = $this->searchOneByCriteria(new Criteria(['id.value' => $id]));
         $this->remove($product);
     }
 
-    public function search(?Criteria $criteria): array
+    public function searchOneByCriteria(?Criteria $criteria): Product
     {
-        return parent::search($criteria);
+        return $this->repository(Product::class)->withCriteria($criteria)->searchOne();
     }
 
-    public function count(?Criteria $criteria): int
+    public function searchByCriteria(?Criteria $criteria): array
     {
-        return parent::count($criteria);
+        return $this->repository(Product::class)->withCriteria($criteria)->search();
     }
 
-    public function exists(string | int  $field, string $column): bool
+    public function countByCriteria(?Criteria $criteria): int
     {
-        $qb = $this->entityManager->createQueryBuilder();
-        $query = $qb->select('p')
-                    ->from(Product::class, 'p')
-                    ->where('p.'.$column.'.value = :field')
-                    ->setParameter(':field', $field)
-                    ->setMaxResults(1)
-                    ->getQuery();
+        return $this->repository(Product::class)->withCriteria($criteria)->count();
+    }
 
-        return count($query->getResult()) > 0;
+    public function isExistingByCriteria(?Criteria $criteria): bool
+    {
+        return $this->countByCriteria($criteria) > 0;
     }
 }

@@ -5,6 +5,16 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity name="App\Backend\Cart\Domain\Cart" table="carts">
+<!--        <many-to-many field="products" target-entity="App\Backend\Products\Domain\Product">-->
+<!--            <join-table name="carts_products">-->
+<!--                <join-columns>-->
+<!--                    <join-column name="cart_id" referenced-column-name="id" />-->
+<!--                </join-columns>-->
+<!--                <inverse-join-columns>-->
+<!--                    <join-column name="product_id" referenced-column-name="id" unique="true" />-->
+<!--                </inverse-join-columns>-->
+<!--            </join-table>-->
+<!--        </many-to-many>-->
         <embedded name="id" class="App\Backend\Cart\Domain\CartId" use-column-prefix="false" />
         <field name="products" type="product_ids" column="products" />
     </entity>

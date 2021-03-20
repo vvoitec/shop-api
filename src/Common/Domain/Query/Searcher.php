@@ -9,5 +9,6 @@ use App\Common\Domain\Query\Response;
 
 interface Searcher
 {
-    public function searchAndCount(Criteria $criteria): Response;
+    public function searchAndCount(Criteria $criteria);
+//    public function search(Criteria $criteria): Response;
 }

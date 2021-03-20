@@ -90,4 +90,19 @@ class ProductController extends Controller
             Response::HTTP_OK
         );
     }
+
+    #[Route('/product/{id}', name: 'product.delete', methods: ['get'])]
+    public function getProduct(int $slug)
+    {
+        $response = $this->getSearcher()->searchOne(
+            new Criteria(
+                ['id.value' => $slug],
+            ),
+        );
+
+        return new JsonResponse(
+            $response,
+            Response::HTTP_OK
+        );
+    }
 }
