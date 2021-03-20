@@ -25,17 +25,4 @@ class CartSearcher implements Searcher
         $cart = $this->cartRepository->searchOneByCriteria($criteria);
         return new CartResponse($cart, $this->priceCounter->count($cart));
     }
-
-//    private function count(Cart $cart)
-//    {
-//        $products = $this->productRepository->searchByCriteria(new Criteria(['id.value' => $cart->products()]));
-//        return array_reduce($products, function($total, $product) {
-//            $total += (float)$product->price()->value();
-//            return $total;
-//        });
-//    }
-
-    public function searchAndCount(Criteria $criteria) {
-        // stub;
-    }
 }

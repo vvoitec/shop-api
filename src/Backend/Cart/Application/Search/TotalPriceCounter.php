@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Backend\Cart\Application\Search;
 
 use App\Backend\Cart\Domain\Cart;
-use App\Backend\Cart\Domain\CartRepository;
 use App\Backend\Cart\Domain\TotalPrice;
 use App\Backend\Products\Domain\ProductRepository;
 use App\Common\Domain\Filtering\Criteria;
