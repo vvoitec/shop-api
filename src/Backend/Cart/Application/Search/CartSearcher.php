@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Backend\Cart\Application\Search;
 
 use App\Backend\Cart\Application\CartResponse;
-use App\Backend\Cart\Domain\Cart;
 use App\Backend\Cart\Domain\CartRepository;
-use App\Backend\Products\Domain\ProductRepository;
 use App\Common\Domain\Filtering\Criteria;
 use App\Common\Domain\Query\Response;
 use App\Common\Domain\Query\Searcher;

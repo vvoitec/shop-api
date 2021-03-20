@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Web\Controller;
 
-use App\Backend\Cart\Application\AddProduct\AddProductToCartCommand;
+use App\Backend\Cart\Application\AddProduct\AddProductsToCartCommand;
 use App\Backend\Cart\Application\Create\CreateCartCommand;
+use App\Backend\Cart\Application\RemoveProduct\RemoveProductsFromCartCommand;
 use App\Common\Domain\Filtering\Criteria;
 use App\Common\Domain\Query\Searcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -54,9 +55,20 @@ class CartController extends Controller
         $body = json_decode($request->getContent(), true);
 
         $this->commandBus->dispatch(
-            new AddProductToCartCommand($slug, $body['products'])
+            new AddProductsToCartCommand($slug, $body['products'])
         );
 
-        return new JsonResponse('Products added!', Response::HTTP_CREATED);
+        return new JsonResponse('Products added', Response::HTTP_CREATED);
+    }
+
+    public function removeProductsFromCart(int $slug, Request $request)
+    {
+        $body = json_decode($request->getContent(), true);
+
+        $this->commandBus->dispatch(
+            new RemoveProductsFromCartCommand($slug, $body['products'])
+        );
+
+        return new JsonResponse('Products removed', Response::HTTP_CREATED);
     }
 }

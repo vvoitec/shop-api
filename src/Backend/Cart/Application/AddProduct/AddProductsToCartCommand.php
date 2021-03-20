@@ -6,7 +6,7 @@ namespace App\Backend\Cart\Application\AddProduct;
 
 use App\Common\Domain\Bus\Command\Command;
 
-class AddProductToCartCommand implements Command
+class AddProductsToCartCommand implements Command
 {
     public function __construct(
         private int $cartId,

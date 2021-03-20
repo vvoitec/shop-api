@@ -39,8 +39,14 @@ cart.get_cart:
   requirements:
     slug: '\d+'
 cart.add_products_to_cart:
-  path: /cart/{slug}
+  path: /cart/{slug}/add
   controller: App\Web\Controller\CartController::addProductsToCart
+  methods: PUT
+  requirements:
+    slug: '\d+'
+cart.remove_products_from_cart:
+  path: /cart/{slug}/remove
+  controller: App\Web\Controller\CartController::removeProductsFromCart
   methods: PUT
   requirements:
     slug: '\d+'

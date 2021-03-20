@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Common\Infrastructure\Bus\Command;
 
-use App\Backend\Cart\Application\AddProduct\AddProductToCartCommand;
-use App\Backend\Cart\Application\AddProduct\AddProductToCartCommandHandler;
+use App\Backend\Cart\Application\AddProduct\AddProductsToCartCommand;
+use App\Backend\Cart\Application\AddProduct\AddProductsToCartCommandHandler;
 use App\Backend\Cart\Application\Create\CreateCartCommand;
 use App\Backend\Cart\Application\Create\CreateCartCommandHandler;
+use App\Backend\Cart\Application\RemoveProduct\RemoveProductsFromCartCommand;
+use App\Backend\Cart\Application\RemoveProduct\RemoveProductsFromCartCommandHandler;
 use App\Backend\Products\Application\Create\CreateProductCommand;
 use App\Backend\Products\Application\Create\CreateProductCommandHandler;
 use App\Backend\Products\Application\Remove\RemoveProductCommand;
@@ -34,7 +36,8 @@ class CommandBus implements \App\Common\Domain\Bus\Command\CommandBus
             RemoveProductCommand::class => array(RemoveProductCommandHandler::class, 'handle'),
             UpdateProductCommand::class => array(UpdateProductCommandHandler::class, 'handle'),
             CreateCartCommand::class => array(CreateCartCommandHandler::class, 'handle'),
-            AddProductToCartCommand::class => array(AddProductToCartCommandHandler::class, 'handle')
+            AddProductsToCartCommand::class => array(AddProductsToCartCommandHandler::class, 'handle'),
+            RemoveProductsFromCartCommand::class => array(RemoveProductsFromCartCommandHandler::class, 'handle')
         ];
 
     public function __construct(ContainerInterface $serviceLocator)
