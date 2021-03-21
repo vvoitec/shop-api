@@ -25,11 +25,40 @@ class ProductController extends Controller
      * @OA\Get(
      *     path="/product",
      *     tags={"product"},
+     *     description="Collection operation for searching products",
      *     operationId="searchProducts",
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="query",
+     *          @OA\Schema(
+     *              type="int",
+     *          )
+     *     ),
+     *      @OA\Parameter(
+     *          name="title",
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string",
+     *          )
+     *     ),
+     *      @OA\Parameter(
+     *          name="limit",
+     *          in="query",
+     *          @OA\Schema(
+     *              type="int",
+     *          )
+     *     ),
+     *      @OA\Parameter(
+     *          name="offset",
+     *          in="query",
+     *          @OA\Schema(
+     *              type="int",
+     *          )
+     *     ),
      *     @OA\Response(
-     *          response=400,
-     *          description="Validation exception"
-     *      )
+     *          response=200,
+     *          description="success",
+     *      ),
      * )
      */
     public function searchProducts(Request $request)
@@ -53,7 +82,22 @@ class ProductController extends Controller
         );
     }
 
-    #[Route('/product', name: 'product.create', methods: ['post'])]
+    /**
+     * @OA\Post(
+     *     path="/product",
+     *     tags={"product"},
+     *     operationId="createProduct",
+     *     @OA\Response(
+     *         response=201,
+     *         description="Created",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation exception",
+     *     ),
+     *     requestBody={"$ref": "#/components/requestBodies/Product"}
+     * )
+     */
     public function createProduct(Request $request)
     {
         $body = json_decode($request->getContent(), true);
@@ -71,7 +115,29 @@ class ProductController extends Controller
         );
     }
 
-    #[Route('/product/{id}', name: 'product.update', methods: ['put'])]
+    /**
+     * @OA\Put(
+     *     path="/product/{id}",
+     *     tags={"product"},
+     *     operationId="updateProduct",
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          @OA\Schema(
+     *              type="int",
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Updated",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation exception",
+     *     ),
+     *     requestBody={"$ref": "#/components/requestBodies/Product"}
+     * )
+     */
     public function updateProduct(int $slug, Request $request)
     {
         $body = json_decode($request->getContent(), true);
@@ -90,7 +156,28 @@ class ProductController extends Controller
         );
     }
 
-    #[Route('/product/{id}', name: 'product.delete', methods: ['delete'])]
+    /**
+     * @OA\Delete(
+     *     path="/product/{id}",
+     *     tags={"product"},
+     *     operationId="removeProduct",
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          @OA\Schema(
+     *              type="int",
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Removed",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation exception",
+     *     ),
+     * )
+     */
     public function removeProduct(int $slug)
     {
         $removeProductCommand = new RemoveProductCommand($slug);
@@ -98,11 +185,11 @@ class ProductController extends Controller
 
         return new JsonResponse(
             'Removed',
-            Response::HTTP_OK
+            Response::HTTP_ACCEPTED
         );
     }
 
-    #[Route('/product/{id}', name: 'product.delete', methods: ['get'])]
+
     public function getProduct(int $slug)
     {
         $response = $this->getSearcher()->searchOne(

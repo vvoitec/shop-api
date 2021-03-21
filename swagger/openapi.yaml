@@ -10,7 +10,98 @@ paths:
     get:
       tags:
         - product
+      description: 'Collection operation for searching products'
       operationId: searchProducts
+      parameters:
+        -
+          name: id
+          in: query
+          schema:
+            type: int
+        -
+          name: title
+          in: query
+          schema:
+            type: string
+        -
+          name: limit
+          in: query
+          schema:
+            type: int
+        -
+          name: offset
+          in: query
+          schema:
+            type: int
       responses:
+        '200':
+          description: success
+    post:
+      tags:
+        - product
+      operationId: createProduct
+      requestBody:
+        $ref: '#/components/requestBodies/Product'
+      responses:
+        '201':
+          description: Created
         '400':
           description: 'Validation exception'
+  '/product/{id}':
+    put:
+      tags:
+        - product
+      operationId: updateProduct
+      parameters:
+        -
+          name: id
+          in: path
+          schema:
+            type: int
+      requestBody:
+        $ref: '#/components/requestBodies/Product'
+      responses:
+        '201':
+          description: Updated
+        '400':
+          description: 'Validation exception'
+    delete:
+      tags:
+        - product
+      operationId: removeProduct
+      parameters:
+        -
+          name: id
+          in: path
+          schema:
+            type: int
+      responses:
+        '200':
+          description: Removed
+        '400':
+          description: 'Validation exception'
+components:
+  schemas:
+    ProductModel:
+      title: 'Product model'
+      description: 'Product model'
+      required:
+        - title
+        - price
+      properties:
+        title:
+          title: title
+          description: 'Unique title'
+          type: string
+        price:
+          title: price
+          description: price
+          type: string
+      type: object
+  requestBodies:
+    Product:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductModel'
