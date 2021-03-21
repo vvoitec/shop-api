@@ -25,9 +25,4 @@ class CartRepository extends DoctrineRepository implements CartRepositoryInterfa
     {
         return $this->repository(Cart::class)->withCriteria($criteria)->count();
     }
-
-    public function isExistingByCriteria(?Criteria $criteria): bool
-    {
-        return $this->countByCriteria($criteria) > 0;
-    }
 }

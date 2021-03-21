@@ -40,6 +40,6 @@ class ProductRepository extends DoctrineRepository implements ProductRepositoryI
 
     public function isExistingByCriteria(?Criteria $criteria): bool
     {
-        return $this->countByCriteria($criteria) > 0;
+        return $this->repository(Product::class)->withCriteria($criteria)->isExisting() > 0;
     }
 }

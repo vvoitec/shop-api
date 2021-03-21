@@ -64,4 +64,9 @@ class DoctrineRepository
     {
         return $this->entityRepository->matching($this->criteria)->count();
     }
+
+    public function isExisting(): bool
+    {
+        return !$this->entityRepository->matching($this->criteria)->isEmpty();
+    }
 }
