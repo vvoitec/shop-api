@@ -1,0 +1,16 @@
+openapi: 3.0.0
+info:
+  title: 'Shop API'
+  description: 'Shop API'
+  contact:
+    email: w.celowski@gmail.com
+  version: 1.0.0
+paths:
+  /product:
+    get:
+      tags:
+        - product
+      operationId: searchProducts
+      responses:
+        '400':
+          description: 'Validation exception'

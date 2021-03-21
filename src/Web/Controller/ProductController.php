@@ -12,6 +12,7 @@ use App\Common\Domain\Query\Searcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use OpenApi\Annotations as OA;
 
 class ProductController extends Controller
 {
@@ -20,7 +21,17 @@ class ProductController extends Controller
         return $this->searcherFactory->build('Product');
     }
 
-    #[Route('/product', name: 'product.search', methods: ['get'])]
+    /**
+     * @OA\Get(
+     *     path="/product",
+     *     tags={"product"},
+     *     operationId="searchProducts",
+     *     @OA\Response(
+     *          response=400,
+     *          description="Validation exception"
+     *      )
+     * )
+     */
     public function searchProducts(Request $request)
     {
         $id = $request->query->get('id');
