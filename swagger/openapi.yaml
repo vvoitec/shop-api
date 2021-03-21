@@ -6,6 +6,68 @@ info:
     email: w.celowski@gmail.com
   version: 1.0.0
 paths:
+  /cart:
+    post:
+      tags:
+        - cart
+      operationId: createCart
+      requestBody:
+        $ref: '#/components/requestBodies/Cart'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: 'Validation exception'
+  '/cart/{id}':
+    get:
+      tags:
+        - cart
+      operationId: getCart
+      parameters:
+        -
+          name: id
+          in: path
+          schema:
+            type: int
+      responses:
+        '200':
+          description: success
+  '/cart/{id}/add':
+    put:
+      tags:
+        - cart
+      operationId: addProductsToCart
+      parameters:
+        -
+          name: id
+          in: path
+          schema:
+            type: int
+      requestBody:
+        $ref: '#/components/requestBodies/Cart'
+      responses:
+        '201':
+          description: Added
+        '400':
+          description: 'Validation exception'
+  '/cart/{id}/remove':
+    put:
+      tags:
+        - cart
+      operationId: removeProductsFromCart
+      parameters:
+        -
+          name: id
+          in: path
+          schema:
+            type: int
+      requestBody:
+        $ref: '#/components/requestBodies/Cart'
+      responses:
+        '201':
+          description: Added
+        '400':
+          description: 'Validation exception'
   /product:
     get:
       tags:
@@ -82,6 +144,19 @@ paths:
           description: 'Validation exception'
 components:
   schemas:
+    CartModel:
+      title: 'Cart model'
+      description: 'Cart model'
+      required:
+        - prodcuts
+      properties:
+        products:
+          title: products
+          description: products
+          type: array
+          items:
+            type: integer
+      type: object
     ProductModel:
       title: 'Product model'
       description: 'Product model'
@@ -105,3 +180,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ProductModel'
+    Cart:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CartModel'

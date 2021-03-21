@@ -10,17 +10,19 @@ use App\Backend\Products\Domain\ProductId;
 class Cart extends AggregateRoot
 {
     private CartId $id;
+    private array $products;
 
-    public function __construct(
-        private array $products,
-    )
-    {}
+    public function __construct(ProductId ...$products)
+    {
+        if (count($products) > 3) throw new TooManyProductsException('Too many products in cart');
+        $this->products = $products;
+    }
 
     public static function create(
-        array $products
+        ProductId ...$products
     )
     {
-        return new self($products);
+        return new self(...$products);
     }
 
     public function id(): CartId
@@ -42,6 +44,7 @@ class Cart extends AggregateRoot
 
     public function addProduct(ProductId $productId)
     {
+        if (count($this->products) > 3) throw new TooManyProductsException('Too many products in cart');
         $this->products[] = $productId;
     }
 }
