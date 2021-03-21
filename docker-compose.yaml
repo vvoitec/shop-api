@@ -27,15 +27,17 @@ services:
       - gog_shop.network
   db:
     image: mysql:8.0
-    container_name: gog_shop.db
+    container_name: shop-api.db
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: gog_shop.db
+      MYSQL_DATABASE: shop-api.db
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: shop-api
+      MYSQL_PASSWORD: shop-api
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     ports:
-      - "3306:3306"
+      - 3306:3306
     volumes:
       - ./docker-compose/mysql:/docker-compose-entrypoint-initdb.d
     networks:
