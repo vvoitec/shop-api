@@ -18,7 +18,7 @@ class CartRepository extends DoctrineRepository implements CartRepositoryInterfa
 
     public function searchOneByCriteria(?Criteria $criteria): ?Cart
     {
-        return $this->repository(Cart::class)->withCriteria($criteria)->search()[0] ?? null;
+        return $this->repository(Cart::class)->withCriteria($criteria)->searchOne();
     }
 
     public function countByCriteria(?Criteria $criteria): int
