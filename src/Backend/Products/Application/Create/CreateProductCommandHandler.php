@@ -30,6 +30,7 @@ class CreateProductCommandHandler implements CommandHandler
         $this->productRepository->save(Product::create($price, $title));
     }
 
+    // TODO: Create separate service for validation
     private function validate(Command $command): void
     {
         if(empty($command->title()) || empty($command->price())){
@@ -38,6 +39,9 @@ class CreateProductCommandHandler implements CommandHandler
         $titleExists = $this->productRepository->isExistingByCriteria(new Criteria(['title.value' => $command->title()]));
         if ($titleExists) {
             throw new InvalidCommandException('Title already exists!');
+        }
+        if(!is_numeric($command->price())) {
+            throw new InvalidCommandException('Invalid Price');
         }
     }
 }

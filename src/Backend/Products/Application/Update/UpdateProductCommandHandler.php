@@ -43,6 +43,9 @@ class UpdateProductCommandHandler implements CommandHandler
         if ($titleExists) {
             throw new InvalidCommandException('Title already exists!');
         }
+        if(!is_numeric($command->price())) {
+            throw new InvalidCommandException('Invalid Price');
+        }
     }
 
 }
